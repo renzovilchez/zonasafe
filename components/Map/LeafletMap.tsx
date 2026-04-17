@@ -5,6 +5,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 import { ZoneLayer } from "./ZoneLayer";
+import UserLocation from "./UserLocation";
 import { DestinationMarkers, Destination } from "./DestinationMarkers";
 import zonesData from "@/data/zones.json";
 
@@ -96,6 +97,7 @@ export default function LeafletMap() {
       />
       <ZoneLayer zones={zones} />
       <DestinationMarkers destinations={destinations} />
+      <UserLocation />
     </MapContainer>
   );
 }
