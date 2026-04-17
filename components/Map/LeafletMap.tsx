@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 
 import { ZoneLayer } from "./ZoneLayer";
 import UserLocation from "./UserLocation";
+import ProximityAlert from "./ProximityAlert";
 import { DestinationMarkers, Destination } from "./DestinationMarkers";
 import zonesData from "@/data/zones.json";
 import { useGeoAlerts } from "@/hooks/useGeoAlerts";
@@ -101,6 +102,7 @@ export default function LeafletMap() {
       <ZoneLayer zones={zones} />
       <DestinationMarkers destinations={destinations} />
       <UserLocation position={userPos} />
+      <ProximityAlert zone={currentZone} />
     </MapContainer>
   );
 }
