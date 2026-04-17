@@ -1,68 +1,24 @@
-"use client";
+import { useState, useEffect } from "react";
+import { getActiveZone, ZoneForGeo, LatLng } from "@/lib/geo";
 
-import { useEffect, useState } from "react";
-import * as turf from "@turf/turf";
-
-interface Zone {
-  id: string;
-  name: string;
-  level: 1 | 2 | 3;
-  coordinates: [number, number][];
-}
-
-interface Position {
-  lat: number;
-  lng: number;
-}
-
-interface GeoAlertResult {
-  userPos: Position | null;
-  currentZone: Zone | null;
-}
-
-export function useGeoAlerts(zones: Zone[]): GeoAlertResult {
-  const [userPos, setUserPos] = useState<Position | null>(null);
-  const [currentZone, setCurrentZone] = useState<Zone | null>(null);
+export function useGeoAlerts(zones: ZoneForGeo[]) {
+  const [userPos, setUserPos] = useState<LatLng | null>(null);
+  const [currentZone, setCurrentZone] = useState<ZoneForGeo | null>(null);
 
   useEffect(() => {
-    if (!navigator.geolocation || zones.length === 0) return;
+    if (!navigator.geolocation) return;
 
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-
-        const point = turf.point([lng, lat]);
-
-        setUserPos({ lat, lng });
-
-        const dangerZones = zones.filter((z) => z.level === 3);
-
-        let foundZone: Zone | null = null;
-
-        for (const zone of dangerZones) {
-          const polygon = turf.polygon([
-            zone.coordinates.map(([lat, lng]) => [lng, lat]),
-          ]);
-
-          const isInside = turf.booleanPointInPolygon(point, polygon);
-
-          if (isInside) {
-            foundZone = zone;
-            break;
-          }
-        }
-
-        setCurrentZone(foundZone);
+        const newPos: LatLng = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        };
+        setUserPos(newPos);
+        setCurrentZone(getActiveZone(newPos, zones));
       },
-      (err) => {
-        console.error("Geo error:", err);
-      },
-      {
-        enableHighAccuracy: true,
-        maximumAge: 5000,
-        timeout: 10000,
-      },
+      (err) => console.error("GPS error:", err),
+      { enableHighAccuracy: true },
     );
 
     return () => navigator.geolocation.clearWatch(watchId);
