@@ -12,6 +12,7 @@ import RouteLayer from "./RouteLayer";
 import zonesData from "@/data/zones.json";
 import { useGeoAlerts } from "@/hooks/useGeoAlerts";
 import { getRoute } from "@/lib/ors";
+import SearchBar from "@/components/ui/SearchBar";
 
 interface Zone {
   id: string;
@@ -63,6 +64,19 @@ export default function LeafletMap({ zones: initialZones }: any) {
     return [];
   };
 
+  const handleSelectDestination = async (destination: Destination) => {
+    if (!userPos) return;
+
+    const result = await getRoute(
+      [userPos.lat, userPos.lng],
+      [destination.lat, destination.lng],
+    );
+
+    if (result) {
+      setRoute(result.coordinates);
+    }
+  };
+
   useEffect(() => {
     setZones(normalizeData(initialZones));
 
@@ -97,20 +111,26 @@ export default function LeafletMap({ zones: initialZones }: any) {
   }, [userPos]);
 
   return (
-    <MapContainer
-      center={[-8.1074, -79.0099]}
-      zoom={15}
-      className="w-full h-screen"
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    <div className="relative w-full h-screen">
+      <SearchBar
+        destinations={destinations}
+        onSelect={handleSelectDestination}
       />
-      <ZoneLayer zones={zones} />
-      <DestinationMarkers destinations={destinations} />
-      <UserLocation position={userPos} />
-      <ProximityAlert zone={currentZone} />
-      <RouteLayer coordinates={route} />
-    </MapContainer>
+      <MapContainer
+        center={[-8.1074, -79.0099]}
+        zoom={15}
+        className="w-full h-screen"
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <ZoneLayer zones={zones} />
+        <DestinationMarkers destinations={destinations} />
+        <UserLocation position={userPos} />
+        <ProximityAlert zone={currentZone} />
+        <RouteLayer coordinates={route} />
+      </MapContainer>
+    </div>
   );
 }
