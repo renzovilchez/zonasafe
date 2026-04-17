@@ -5,6 +5,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 import { ZoneLayer } from "./ZoneLayer";
+import { DestinationMarkers, Destination } from "./DestinationMarkers";
 import zonesData from "@/data/zones.json";
 
 interface Zone {
@@ -17,6 +18,7 @@ interface Zone {
 
 export default function LeafletMap() {
   const [zones, setZones] = useState<Zone[]>([]);
+  const [destinations, setDestinations] = useState<Destination[]>([]);
 
   const normalizeData = (data: any): Zone[] => {
     // Si viene del GeoJSON estático (FeatureCollection)
@@ -27,7 +29,9 @@ export default function LeafletMap() {
         level: f.properties.level,
         description: f.properties.description,
         // GeoJSON [lng, lat] -> Leaflet [lat, lng]
-        coordinates: f.geometry.coordinates[0].map((coord: [number, number]) => [coord[1], coord[0]])
+        coordinates: f.geometry.coordinates[0].map(
+          (coord: [number, number]) => [coord[1], coord[0]],
+        ),
       }));
     }
 
@@ -39,9 +43,13 @@ export default function LeafletMap() {
         level: z.level,
         description: z.description,
         // PostGIS geometry -> Leaflet positions
-        coordinates: z.geometry.type === "Polygon" 
-          ? z.geometry.coordinates[0].map((coord: [number, number]) => [coord[1], coord[0]])
-          : []
+        coordinates:
+          z.geometry.type === "Polygon"
+            ? z.geometry.coordinates[0].map((coord: [number, number]) => [
+                coord[1],
+                coord[0],
+              ])
+            : [],
       }));
     }
 
@@ -61,7 +69,19 @@ export default function LeafletMap() {
       }
     };
 
+    const loadDestinations = async () => {
+      try {
+        const res = await fetch("/api/destinations");
+        if (!res.ok) throw new Error("API error");
+        const data = await res.json();
+        setDestinations(data);
+      } catch (error) {
+        console.error("Error cargando destinos:", error);
+      }
+    };
+
     loadZones();
+    loadDestinations();
   }, []);
 
   return (
@@ -75,6 +95,7 @@ export default function LeafletMap() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <ZoneLayer zones={zones} />
+      <DestinationMarkers destinations={destinations} />
     </MapContainer>
   );
 }

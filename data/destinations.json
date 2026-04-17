@@ -1,0 +1,21 @@
+{
+  "destinations": [
+    {
+      "id": "dest-001",
+      "name": "Mercado Central El Porvenir",
+      "category": "market",
+      "lat": -8.1074,
+      "lng": -79.0099,
+      "address": "Jr. Grau 123, El Porvenir",
+      "open_hours": "Lun-Sab: 6am-2pm"
+    },
+    {
+      "id": "dest-002",
+      "name": "Fábrica de Calzado San José",
+      "category": "factory",
+      "lat": -8.108,
+      "lng": -79.0105,
+      "address": "Av. Los Incas 456"
+    }
+  ]
+}
