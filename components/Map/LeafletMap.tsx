@@ -8,8 +8,10 @@ import { ZoneLayer } from "./ZoneLayer";
 import UserLocation from "./UserLocation";
 import ProximityAlert from "./ProximityAlert";
 import { DestinationMarkers, Destination } from "./DestinationMarkers";
+import RouteLayer from "./RouteLayer";
 import zonesData from "@/data/zones.json";
 import { useGeoAlerts } from "@/hooks/useGeoAlerts";
+import { getRoute } from "@/lib/ors";
 
 interface Zone {
   id: string;
@@ -22,7 +24,7 @@ interface Zone {
 export default function LeafletMap({ zones: initialZones }: any) {
   const [zones, setZones] = useState<Zone[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
-
+  const [route, setRoute] = useState<[number, number][] | null>(null);
   const { userPos, currentZone } = useGeoAlerts(zones);
 
   const normalizeData = (data: any): Zone[] => {
@@ -78,6 +80,22 @@ export default function LeafletMap({ zones: initialZones }: any) {
     loadDestinations();
   }, [initialZones]);
 
+  useEffect(() => {
+    if (!userPos) return;
+
+    const loadRoute = async () => {
+      const destination: [number, number] = [-8.105, -79.0065];
+
+      const result = await getRoute([userPos.lat, userPos.lng], destination);
+
+      if (result) {
+        setRoute(result.coordinates);
+      }
+    };
+
+    loadRoute();
+  }, [userPos]);
+
   return (
     <MapContainer
       center={[-8.1074, -79.0099]}
@@ -92,6 +110,7 @@ export default function LeafletMap({ zones: initialZones }: any) {
       <DestinationMarkers destinations={destinations} />
       <UserLocation position={userPos} />
       <ProximityAlert zone={currentZone} />
+      <RouteLayer coordinates={route} />
     </MapContainer>
   );
 }
