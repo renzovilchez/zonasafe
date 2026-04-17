@@ -8,6 +8,7 @@ import { ZoneLayer } from "./ZoneLayer";
 import UserLocation from "./UserLocation";
 import { DestinationMarkers, Destination } from "./DestinationMarkers";
 import zonesData from "@/data/zones.json";
+import { useGeoAlerts } from "@/hooks/useGeoAlerts";
 
 interface Zone {
   id: string;
@@ -20,6 +21,8 @@ interface Zone {
 export default function LeafletMap() {
   const [zones, setZones] = useState<Zone[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
+
+  const { userPos, currentZone } = useGeoAlerts(zones);
 
   const normalizeData = (data: any): Zone[] => {
     // Si viene del GeoJSON estático (FeatureCollection)
@@ -97,7 +100,7 @@ export default function LeafletMap() {
       />
       <ZoneLayer zones={zones} />
       <DestinationMarkers destinations={destinations} />
-      <UserLocation />
+      <UserLocation position={userPos} />
     </MapContainer>
   );
 }

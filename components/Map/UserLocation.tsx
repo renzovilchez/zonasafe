@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Marker, useMap } from "react-leaflet";
+import { useEffect, useRef } from "react";
 import L from "leaflet";
 
-interface Position {
-  lat: number;
-  lng: number;
+interface Props {
+  position: { lat: number; lng: number } | null;
 }
 
 const userIcon = L.divIcon({
@@ -16,41 +15,16 @@ const userIcon = L.divIcon({
   iconAnchor: [10, 10],
 });
 
-export default function UserLocation() {
-  const [position, setPosition] = useState<Position | null>(null);
+export default function UserLocation({ position }: Props) {
   const map = useMap();
+  const hasCentered = useRef(false);
 
   useEffect(() => {
-    if (!navigator.geolocation) return;
+    if (!position || hasCentered.current) return;
 
-    let hasCentered = false;
-
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => {
-        const coords = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        };
-
-        setPosition(coords);
-
-        if (!hasCentered) {
-          map.setView([coords.lat, coords.lng], 16);
-          hasCentered = true;
-        }
-      },
-      (err) => {
-        console.error("GPS error:", err);
-      },
-      {
-        enableHighAccuracy: true,
-        maximumAge: 10000,
-        timeout: 10000,
-      },
-    );
-
-    return () => navigator.geolocation.clearWatch(watchId);
-  }, [map]);
+    map.setView([position.lat, position.lng], 16);
+    hasCentered.current = true;
+  }, [position, map]);
 
   if (!position) return null;
 
