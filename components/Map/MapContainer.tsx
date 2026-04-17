@@ -11,4 +11,6 @@ const LeafletMap = dynamic(() => import("./LeafletMap"), {
   ),
 });
 
-export default LeafletMap;
+export default function MapContainer({ zones }: any) {
+  return <LeafletMap zones={zones} />;
+}

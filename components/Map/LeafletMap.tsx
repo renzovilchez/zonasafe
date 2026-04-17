@@ -19,7 +19,7 @@ interface Zone {
   description?: string;
 }
 
-export default function LeafletMap() {
+export default function LeafletMap({ zones: initialZones }: any) {
   const [zones, setZones] = useState<Zone[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
 
@@ -62,17 +62,7 @@ export default function LeafletMap() {
   };
 
   useEffect(() => {
-    const loadZones = async () => {
-      try {
-        const res = await fetch("/api/zones");
-        if (!res.ok) throw new Error("API error");
-        const data = await res.json();
-        setZones(normalizeData(data));
-      } catch (error) {
-        console.warn("Cargando fallback de zones.json:", error);
-        setZones(normalizeData(zonesData));
-      }
-    };
+    setZones(normalizeData(initialZones));
 
     const loadDestinations = async () => {
       try {
@@ -85,9 +75,8 @@ export default function LeafletMap() {
       }
     };
 
-    loadZones();
     loadDestinations();
-  }, []);
+  }, [initialZones]);
 
   return (
     <MapContainer
