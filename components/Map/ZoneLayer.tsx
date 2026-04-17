@@ -1,10 +1,11 @@
 import { Polygon } from "react-leaflet";
 
 interface Zone {
-  id: number;
+  id: string;
   name: string;
   level: 1 | 2 | 3;
   coordinates: [number, number][];
+  description?: string;
 }
 
 interface ZoneLayerProps {
@@ -30,7 +31,15 @@ export function ZoneLayer({ zones }: ZoneLayerProps) {
             fillOpacity: 0.35,
             weight: 2,
           }}
-        />
+        >
+          {zone.description && (
+            <Polygon
+              key={`${zone.id}-popup`}
+              positions={zone.coordinates}
+              pathOptions={{ opacity: 0 }}
+            />
+          )}
+        </Polygon>
       ))}
     </>
   );

@@ -1,0 +1,131 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "ep-1",
+      "properties": {
+        "name": "Centro El Porvenir",
+        "level": 2,
+        "description": "Zona comercial y administrativa principal"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-79.0, -8.082],
+            [-78.99, -8.082],
+            [-78.99, -8.092],
+            [-79.0, -8.092],
+            [-79.0, -8.082]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ep-2",
+      "properties": {
+        "name": "Parque Industrial",
+        "level": 2,
+        "description": "Zona de fábricas y talleres de calzado"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-79.01, -8.075],
+            [-79.0, -8.075],
+            [-79.0, -8.085],
+            [-79.01, -8.085],
+            [-79.01, -8.075]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ep-3",
+      "properties": {
+        "name": "Río Seco",
+        "level": 3,
+        "description": "Zona con mayor riesgo y menor urbanización"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-79.02, -8.07],
+            [-79.01, -8.07],
+            [-79.01, -8.08],
+            [-79.02, -8.08],
+            [-79.02, -8.07]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ep-4",
+      "properties": {
+        "name": "Miguel Grau",
+        "level": 3,
+        "description": "Zona residencial con reportes de inseguridad"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-79.01, -8.09],
+            [-79.0, -8.09],
+            [-79.0, -8.1],
+            [-79.01, -8.1],
+            [-79.01, -8.09]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ep-5",
+      "properties": {
+        "name": "Alto Trujillo (límite)",
+        "level": 3,
+        "description": "Zona en expansión urbana"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-78.99, -8.06],
+            [-78.98, -8.06],
+            [-78.98, -8.07],
+            [-78.99, -8.07],
+            [-78.99, -8.06]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ep-6",
+      "properties": {
+        "name": "Santa Isabel",
+        "level": 1,
+        "description": "Zona relativamente más tranquila"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-78.995, -8.085],
+            [-78.985, -8.085],
+            [-78.985, -8.095],
+            [-78.995, -8.095],
+            [-78.995, -8.085]
+          ]
+        ]
+      }
+    }
+  ]
+}
