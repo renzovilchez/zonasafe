@@ -13,6 +13,7 @@ import zonesData from "@/data/zones.json";
 import { useGeoAlerts } from "@/hooks/useGeoAlerts";
 import { getRoute } from "@/lib/ors";
 import SearchBar from "@/components/ui/SearchBar";
+import DestinationCard from "../ui/DestinationCard";
 
 interface Zone {
   id: string;
@@ -27,6 +28,8 @@ export default function LeafletMap({ zones: initialZones }: any) {
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [route, setRoute] = useState<[number, number][] | null>(null);
   const { userPos, currentZone } = useGeoAlerts(zones);
+  const [selectedDestination, setSelectedDestination] =
+    useState<Destination | null>(null);
 
   const normalizeData = (data: any): Zone[] => {
     // Si viene del GeoJSON estático (FeatureCollection)
@@ -65,16 +68,13 @@ export default function LeafletMap({ zones: initialZones }: any) {
   };
 
   const handleSelectDestination = async (destination: Destination) => {
+    setSelectedDestination(destination);
     if (!userPos) return;
-
     const result = await getRoute(
       [userPos.lat, userPos.lng],
       [destination.lat, destination.lng],
     );
-
-    if (result) {
-      setRoute(result.coordinates);
-    }
+    if (result) setRoute(result.coordinates);
   };
 
   useEffect(() => {
@@ -131,6 +131,12 @@ export default function LeafletMap({ zones: initialZones }: any) {
         <ProximityAlert zone={currentZone} />
         <RouteLayer coordinates={route} />
       </MapContainer>
+
+      <DestinationCard
+        destination={selectedDestination}
+        onClose={() => setSelectedDestination(null)}
+        onRoute={handleSelectDestination}
+      />
     </div>
   );
 }
