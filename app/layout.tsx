@@ -30,6 +30,7 @@ export const metadata: Metadata = {
 };
 
 import OneSignalInitializer from "@/components/Notification/OneSignalInitializer";
+import NotificationBanner from "@/components/Notification/NotificationBanner";
 
 export default function RootLayout({
   children,
@@ -38,6 +39,7 @@ export default function RootLayout({
     <html lang="es" className={`${geist.variable} h-full antialiased`}>
       <body className="h-full">
         <OneSignalInitializer />
+        <NotificationBanner />
         {children}
       </body>
     </html>
