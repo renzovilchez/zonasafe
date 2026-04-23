@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function OfflinePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-6 text-center">
@@ -31,12 +33,12 @@ export default function OfflinePage() {
         dispositivo.
       </p>
 
-      <button
-        onClick={() => window.location.reload()}
+      <Link
+        href="/mapa"
         className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 active:scale-95"
       >
         Reintentar
-      </button>
+      </Link>
 
       <p className="mt-4 text-xs text-slate-400">ZonaSafe — El Porvenir</p>
     </main>
