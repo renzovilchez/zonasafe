@@ -29,12 +29,17 @@ export const metadata: Metadata = {
   },
 };
 
+import OneSignalInitializer from "@/components/Notification/OneSignalInitializer";
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className={`${geist.variable} h-full antialiased`}>
-      <body className="h-full">{children}</body>
+      <body className="h-full">
+        <OneSignalInitializer />
+        {children}
+      </body>
     </html>
   );
 }
