@@ -11,6 +11,7 @@ import ProximityAlert from "./ProximityAlert";
 import { DestinationMarkers, Destination } from "./DestinationMarkers";
 import RouteLayer from "./RouteLayer";
 import { useGeoAlerts } from "@/hooks/useGeoAlerts";
+import { useNotificationAlerts } from "@/hooks/useNotificationAlerts";
 import { getRoute } from "@/lib/ors";
 import SearchBar from "@/components/ui/SearchBar";
 import DestinationCard from "../ui/DestinationCard";
@@ -63,6 +64,9 @@ export default function LeafletMap({ zones: initialZones }: any) {
   const { userPos, currentZone } = useGeoAlerts(zones);
   const [selectedDestination, setSelectedDestination] =
     useState<Destination | null>(null);
+
+  // Activar alertas de notificación
+  useNotificationAlerts(userPos, currentZone, selectedDestination);
 
   const normalizeData = (data: any): Zone[] => {
     // Si viene del GeoJSON estático (FeatureCollection)
