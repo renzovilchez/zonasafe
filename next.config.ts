@@ -72,13 +72,8 @@ const nextConfig: NextConfig = withPWA({
       },
     },
   ],
-  fallbacks: {
-    document: "/offline",
-    image: "/offline",
-    audio: "/offline",
-    video: "/offline",
-    font: "/offline",
-  },
+  // Se eliminaron los fallbacks automáticos para manejarlos via componentes (OfflineGuard)
+
 })({
   images: {
     remotePatterns: [

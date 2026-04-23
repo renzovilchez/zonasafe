@@ -1,4 +1,5 @@
 import MapContainer from "@/components/Map/MapContainer";
+import OfflineGuard from "@/components/Map/OfflineGuard";
 
 async function getZones() {
   try {
@@ -20,8 +21,10 @@ export default async function MapaPage() {
   const zones = await getZones();
 
   return (
-    <main className="w-full h-screen">
-      <MapContainer zones={zones} />
-    </main>
+    <OfflineGuard>
+      <main className="w-full h-screen">
+        <MapContainer zones={zones} />
+      </main>
+    </OfflineGuard>
   );
 }

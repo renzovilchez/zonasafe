@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 import { ZoneLayer } from "./ZoneLayer";
@@ -9,7 +10,6 @@ import UserLocation from "./UserLocation";
 import ProximityAlert from "./ProximityAlert";
 import { DestinationMarkers, Destination } from "./DestinationMarkers";
 import RouteLayer from "./RouteLayer";
-import zonesData from "@/data/zones.json";
 import { useGeoAlerts } from "@/hooks/useGeoAlerts";
 import { getRoute } from "@/lib/ors";
 import SearchBar from "@/components/ui/SearchBar";
@@ -21,6 +21,39 @@ interface Zone {
   level: 1 | 2 | 3;
   coordinates: [number, number][];
   description?: string;
+}
+
+// Componente hijo que tiene acceso a la instancia del mapa
+function PrecacheElPorvenir() {
+  const map = useMap();
+
+  useEffect(() => {
+    const hasPrecached = sessionStorage.getItem("zonasafe-precached");
+
+    if (!hasPrecached) {
+      const elPorvenirBounds = L.latLngBounds(
+        [-8.075, -79.025], // suroeste
+        [-8.025, -78.975], // noreste
+      );
+
+      // Guardar vista actual
+      const currentCenter = map.getCenter();
+      const currentZoom = map.getZoom();
+
+      // Hacer fitBounds para cargar tiles del área
+      map.fitBounds(elPorvenirBounds, { animate: false });
+
+      // Volver a la vista normal después de 2 segundos
+      const timer = setTimeout(() => {
+        map.setView(currentCenter, currentZoom, { animate: false });
+        sessionStorage.setItem("zonasafe-precached", "true");
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [map]);
+
+  return null;
 }
 
 export default function LeafletMap({ zones: initialZones }: any) {
@@ -125,6 +158,7 @@ export default function LeafletMap({ zones: initialZones }: any) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
+        <PrecacheElPorvenir />
         <ZoneLayer zones={zones} />
         <DestinationMarkers destinations={destinations} />
         <UserLocation position={userPos} />
