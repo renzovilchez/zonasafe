@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/layout/Header";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
     title: "ZonaSafe — Navega seguro en El Porvenir",
     description:
       "Mapa interactivo de zonas de seguridad en El Porvenir, Trujillo.",
+    url: "https://zonasafe.vercel.app",
     locale: "es_PE",
     type: "website",
   },
@@ -34,7 +36,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className={`${geist.variable} h-full antialiased`}>
-      <body className="h-full">{children}</body>
+      <body className="h-full flex flex-col">
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,26 +1,17 @@
+import { supabase } from "@/lib/supabase";
+import zonesJson from "@/data/zones.json";
 import MapContainer from "@/components/Map/MapContainer";
 
 async function getZones() {
-  try {
-    const res = await fetch("http://localhost:3000/api/zones", {
-      cache: "no-store",
-    });
-
-    if (!res.ok) throw new Error("Error API");
-
-    return await res.json();
-  } catch (error) {
-    console.warn("Fallback zones desde server:", error);
-    const zones = await import("@/data/zones.json");
-    return zones.default;
-  }
+  const { data, error } = await supabase.from("zones").select("*");
+  if (error || !data?.length) return zonesJson;
+  return data;
 }
 
 export default async function MapaPage() {
   const zones = await getZones();
-
   return (
-    <main className="w-full h-screen">
+    <main className="flex-1 min-h-0">
       <MapContainer zones={zones} />
     </main>
   );

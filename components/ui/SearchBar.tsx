@@ -17,7 +17,16 @@ export default function SearchBar({ destinations, onSelect }: Props) {
 
   return (
     <div className="absolute top-4 left-1/2 -translate-x-1/2 z-1000 w-[90%] max-w-md">
-      <div className="bg-white rounded-lg shadow-lg p-2">
+      <div className="bg-white rounded-lg shadow-lg p-2 flex gap-2">
+        <div className="border rounded-lg p-2">
+          <select name="category" id="category">
+            <option value="">Categorías</option>
+            <option value="mercados">Mercados</option>
+            <option value="fabricas">Fábricas</option>
+            <option value="galerias">Galerías</option>
+          </select>
+        </div>
+
         <input
           type="text"
           placeholder="Buscar destino..."
@@ -48,6 +57,10 @@ export default function SearchBar({ destinations, onSelect }: Props) {
             )}
           </ul>
         )}
+
+        <button className="bg-blue-500 text-white px-3 py-2 rounded">
+          buscar
+        </button>
       </div>
     </div>
   );

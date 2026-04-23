@@ -4,16 +4,20 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-import { ZoneLayer } from "./ZoneLayer";
-import UserLocation from "./UserLocation";
-import ProximityAlert from "./ProximityAlert";
-import { DestinationMarkers, Destination } from "./DestinationMarkers";
-import RouteLayer from "./RouteLayer";
-import zonesData from "@/data/zones.json";
+import { ZoneLayer } from "@/components/Map/ZoneLayer";
+import UserLocation from "@/components/Map/UserLocation";
+import ProximityAlert from "@/components/Map/ProximityAlert";
+import {
+  DestinationMarkers,
+  Destination,
+} from "@/components/Map/DestinationMarkers";
+import RouteLayer from "@/components/Map/RouteLayer";
 import { useGeoAlerts } from "@/hooks/useGeoAlerts";
 import { getRoute } from "@/lib/ors";
 import SearchBar from "@/components/ui/SearchBar";
-import DestinationCard from "../ui/DestinationCard";
+import DestinationCard from "@/components/ui/DestinationCard";
+import LocateButton from "@/components/Map/LocateButton";
+import MapLegend from "@/components/Map/MapLegend";
 
 interface Zone {
   id: string;
@@ -131,6 +135,9 @@ export default function LeafletMap({ zones: initialZones }: any) {
         <ProximityAlert zone={currentZone} />
         <RouteLayer coordinates={route} />
       </MapContainer>
+
+      <LocateButton />
+      <MapLegend />
 
       <DestinationCard
         destination={selectedDestination}

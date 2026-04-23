@@ -17,7 +17,12 @@ export function useGeoAlerts(zones: ZoneForGeo[]) {
         setUserPos(newPos);
         setCurrentZone(getActiveZone(newPos, zones));
       },
-      (err) => console.error("GPS error:", err),
+      (err) => {
+        console.error("GPS error:", {
+          code: err.code,
+          message: err.message,
+        });
+      },
       { enableHighAccuracy: true },
     );
 
