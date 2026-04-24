@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ZonaSafe
 
-## Getting Started
+Mapa interactivo de seguridad para El Porvenir, Trujillo — Perú. Ayuda a visitantes, compradores mayoristas y comerciantes a navegar el distrito conociendo las zonas de riesgo y encontrando mercados, fábricas y galerías de calzado.
 
-First, run the development server:
+🌐 **[zonasafe.vercel.app](https://zonasafe.vercel.app)**
+
+---
+
+## ¿Qué problema resuelve?
+
+El Porvenir es el principal distrito productor de calzado del Perú. Miles de compradores mayoristas y visitantes llegan sin conocer la zona, sin saber qué calles evitar ni dónde están los destinos comerciales clave. ZonaSafe centraliza esa información en un mapa accesible desde cualquier celular.
+
+---
+
+## Funcionalidades
+
+- 🗺️ **Mapa interactivo** centrado en El Porvenir con tiles de OpenStreetMap
+- 🔴 **Zonas de seguridad** coloreadas por nivel — verde (seguro), ámbar (precaución), rojo (peligro)
+- 📍 **Marcadores de destinos** — mercados, fábricas y galerías de calzado
+- 🔍 **Buscador** con filtro por categoría
+- 🧭 **Trazado de rutas** desde la ubicación del usuario hasta el destino elegido
+- ⚠️ **Alertas de proximidad** cuando el usuario entra a una zona de riesgo
+- 📲 **PWA instalable** — funciona como app nativa en Android e iOS
+- 📡 **Modo offline** — datos cacheados para funcionar sin señal
+
+---
+
+## Stack técnico
+
+| Capa                 | Tecnología                      |
+| -------------------- | ------------------------------- |
+| Framework            | Next.js 16 (App Router)         |
+| Mapa                 | Leaflet + react-leaflet         |
+| Base de datos        | Supabase (PostgreSQL + PostGIS) |
+| Análisis geoespacial | Turf.js                         |
+| Rutas                | OpenRouteService API            |
+| Deploy               | Vercel                          |
+| PWA                  | next-pwa                        |
+
+---
+
+## Estructura del proyecto
+
+```
+zonasafe/
+├── app/                    # Rutas y API (Next.js App Router)
+├── components/             # Componentes React
+│   ├── Map/                # Mapa, zonas, marcadores, rutas
+│   └── ui/                 # SearchBar, DestinationCard, MapLegend
+├── hooks/                  # useGeoAlerts, useNotificationAlerts
+├── lib/                    # supabase.ts, geo.ts, ors.ts
+├── data/                   # Fallback offline (zones.json, destinations.json)
+├── public/                 # Íconos PWA
+├── types/                  # Tipos TypeScript compartidos
+└── supabase/migrations/    # Schema inicial PostgreSQL + PostGIS
+```
+
+---
+
+## Configuración local
+
+### Requisitos
+
+- Node.js 18+
+- Cuenta en [Supabase](https://supabase.com)
+- API key de [OpenRouteService](https://openrouteservice.org)
+
+### Instalación
+
+```bash
+git clone https://github.com/renzovilchez/zonasafe
+cd zonasafe
+npm install
+```
+
+### Variables de entorno
+
+Crea `.env.local` en la raíz basándote en `.env.example`:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
+ORS_API_KEY=tu_api_key
+```
+
+### Base de datos
+
+Ejecuta el schema en el SQL Editor de Supabase:
+
+```
+supabase/migrations/001_initial.sql
+```
+
+### Desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Despliegue
 
-## Learn More
+Deploy automático en Vercel con cada push a `main`. Variables de entorno requeridas en Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `ORS_API_KEY`.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Licencia
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
