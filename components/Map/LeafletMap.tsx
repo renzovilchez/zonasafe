@@ -22,6 +22,7 @@ import { useNotificationAlerts } from "@/hooks/useNotificationAlerts";
 import { getRoute } from "@/lib/ors";
 import SearchBar from "@/components/ui/SearchBar";
 import DestinationCard from "../ui/DestinationCard";
+import LocateButton from "./LocateButton";
 
 interface Zone {
   id: string;
@@ -196,6 +197,7 @@ export default function LeafletMap({ zones: initialZones }: any) {
         <RouteLayer coordinates={route} />
         <MapEvents />
         <ZoomControl position="bottomright" />
+        <LocateButton />
       </MapContainer>
 
       <DestinationCard
