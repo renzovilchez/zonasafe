@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  useMap,
+  useMapEvents,
+  ZoomControl,
+} from "react-leaflet";
 import { useRouter } from "next/navigation";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -176,6 +182,7 @@ export default function LeafletMap({ zones: initialZones }: any) {
         center={[-8.1074, -79.0099]}
         zoom={15}
         className="w-full h-screen"
+        zoomControl={false}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -188,6 +195,7 @@ export default function LeafletMap({ zones: initialZones }: any) {
         <ProximityAlert zone={currentZone} />
         <RouteLayer coordinates={route} />
         <MapEvents />
+        <ZoomControl position="bottomright" />
       </MapContainer>
 
       <DestinationCard
