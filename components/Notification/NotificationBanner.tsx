@@ -1,22 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import OneSignal from "react-onesignal";
 
 export default function NotificationBanner() {
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
-    // Solo mostrar si no hay permiso y si OneSignal está inicializado
-    const checkPermission = async () => {
-      try {
-        const permission = await Notification.permission;
-        if (permission === "default") {
-          // Esperar un poco para que OneSignal se inicialice bien
-          setTimeout(() => setShowBanner(true), 2000);
-        }
-      } catch (e) {
-        console.warn("Notificaciones no soportadas", e);
+    // Solo mostrar si no hay permiso
+    const checkPermission = () => {
+      if (!("Notification" in window)) {
+        console.warn("Este navegador no soporta notificaciones de escritorio");
+        return;
+      }
+
+      if (Notification.permission === "default") {
+        setTimeout(() => setShowBanner(true), 2000);
       }
     };
 
@@ -25,17 +23,25 @@ export default function NotificationBanner() {
 
   const handleEnable = async () => {
     try {
-      await OneSignal.Slidedown.promptPush();
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        // Enviar notificación de prueba
+        new Notification("¡Notificaciones activadas!", {
+          body: "Ahora recibirás alertas de ZonaSafe.",
+          icon: "/icons/icon-192x192.png",
+        });
+      }
       setShowBanner(false);
     } catch (e) {
       console.error("Error al solicitar permisos:", e);
     }
   };
 
+
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-[9999] md:left-auto md:right-4 md:w-96 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="fixed bottom-4 left-4 right-4 z-9999 md:left-auto md:right-4 md:w-96 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="bg-white/80 backdrop-blur-xl border border-slate-200 p-4 rounded-2xl shadow-2xl shadow-slate-200/50 flex items-center gap-4">
         <div className="bg-blue-600/10 p-2.5 rounded-xl text-blue-600">
           <svg

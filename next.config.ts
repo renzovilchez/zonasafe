@@ -72,8 +72,6 @@ const nextConfig: NextConfig = withPWA({
       },
     },
   ],
-  // Se eliminaron los fallbacks automáticos para manejarlos via componentes (OfflineGuard)
-
 })({
   images: {
     remotePatterns: [
@@ -85,9 +83,7 @@ const nextConfig: NextConfig = withPWA({
     ],
   },
   transpilePackages: ["leaflet", "react-leaflet", "leaflet-arrowheads"],
-  experimental: {
-    typedRoutes: true,
-  },
+  typedRoutes: true,
   logging: {
     fetches: {
       fullUrl: true,

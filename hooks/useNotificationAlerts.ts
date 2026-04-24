@@ -60,14 +60,16 @@ function sendNotification(title: string, body: string) {
     // Usamos el Service Worker si está disponible para que funcione mejor en segundo plano
     if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
       navigator.serviceWorker.ready.then((registration) => {
-        registration.showNotification(title, {
+        // Usamos as any para evitar el error de TypeScript con 'vibrate' y 'renotify'
+        const options: any = {
           body,
           icon: "/icons/icon-192x192.png", // Ajustar según disponibilidad
           badge: "/favicon.ico",
           vibrate: [200, 100, 200],
           tag: title === "⚠️ Zona de Riesgo" ? "risk-zone" : "destination",
           renotify: true,
-        });
+        };
+        registration.showNotification(title, options);
       });
     } else {
       // Fallback a notificación normal
