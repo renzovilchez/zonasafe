@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Navega seguro en El Porvenir, Trujillo",
     start_url: "/mapa",
     display: "standalone",
-    background_color: "#1d4ed8",
-    theme_color: "#1d4ed8",
+    background_color: "#185FA5",
+    theme_color: "#185FA5",
     orientation: "portrait",
     icons: [
       {
