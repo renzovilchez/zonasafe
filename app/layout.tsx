@@ -30,6 +30,7 @@ export const metadata: Metadata = {
 };
 
 import NotificationBanner from "@/components/Notification/NotificationBanner";
+import InstallBanner from "@/components/PWA/InstallBanner";
 
 export default function RootLayout({
   children,
@@ -38,6 +39,7 @@ export default function RootLayout({
     <html lang="es" className={`${geist.variable} h-full antialiased`}>
       <body className="h-full">
         <NotificationBanner />
+        <InstallBanner />
         {children}
       </body>
     </html>
