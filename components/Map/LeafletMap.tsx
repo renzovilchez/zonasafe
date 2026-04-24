@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import { useRouter } from "next/navigation";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -53,6 +54,24 @@ function PrecacheElPorvenir() {
       return () => clearTimeout(timer);
     }
   }, [map]);
+
+  return null;
+}
+
+// --- NUEVO: Eventos del mapa (Long press / Right click para reportar) ---
+function MapEvents() {
+  const router = useRouter();
+
+  useMapEvents({
+    contextmenu(e) {
+      // e.latlng contiene las coordenadas exactas de donde se hizo el long-press
+      const { lat, lng } = e.latlng;
+      // Redirigir a la página de reporte con las coordenadas en la URL
+      if (confirm("¿Quieres reportar un incidente en esta ubicación exacta?")) {
+        router.push(`/reportar?lat=${lat}&lng=${lng}`);
+      }
+    },
+  });
 
   return null;
 }
@@ -168,6 +187,7 @@ export default function LeafletMap({ zones: initialZones }: any) {
         <UserLocation position={userPos} />
         <ProximityAlert zone={currentZone} />
         <RouteLayer coordinates={route} />
+        <MapEvents />
       </MapContainer>
 
       <DestinationCard
