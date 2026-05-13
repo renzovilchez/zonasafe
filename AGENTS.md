@@ -63,9 +63,9 @@
 ## Commands
 
 ```bash
-npm run dev       # local dev
-npm run pwa       # local PWA dev
-npm run build     # production build (uses --webpack flag)
+npm run dev       # local dev (hot reload, sin PWA)
+npm run build     # production build (con PWA)
+npm run pwa       # build + start (para probar PWA offline)
 npm run lint      # eslint
 ```
 
